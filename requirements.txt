@@ -1,15 +1,1 @@
-fastapi>=0.115.0
-uvicorn[standard]>=0.32.0
-pydantic>=2.9.0
-python-dotenv>=1.0.1
-python-multipart>=0.0.12
-httpx>=0.27.2
-google-genai>=1.0.0
-youtube-transcript-api>=0.6.3
-
-# Optional (recommended): enables local face-centered smart cropping (free, CPU)
-opencv-python-headless>=4.10.0
-
-# Optional (recommended): enables free local audio transcription for authorized uploaded videos
-# Install if you want automatic Whisper transcription without YouTube captions:
-# faster-whisper>=1.0.3
+-r backend/requirements.txt
