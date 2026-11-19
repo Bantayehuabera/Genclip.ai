@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClipGenius AI — Short-Form Video Clipper</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Header -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">&#10022;</div>
+        <div>
+          <h1>ClipGenius AI</h1>
+          <p class="tagline">Turn authorized long-form videos into 9:16 Shorts, Reels &amp; TikToks</p>
+        </div>
+      </div>
+      <div id="statusPills" class="status-pills" aria-live="polite">
+        <span class="pill pill-muted">Checking backend...</span>
+      </div>
+    </header>
+
+    <!-- Main Input Card -->
+    <main>
+      <section class="panel input-panel">
+        <div class="panel-head">
+          <label for="youtubeUrl" class="panel-title">Paste YouTube URL</label>
+          <span class="yt-badge" title="YouTube">
+            <svg width="20" height="14" viewBox="0 0 24 17" fill="none" aria-hidden="true">
+              <rect width="24" height="17" rx="4" fill="#EF4444" />
+              <path d="M10 5L16 8.5L10 12V5Z" fill="#FFFFFF" />
+            </svg>
+          </span>
+        </div>
+
+        <div class="url-row">
+          <input
+            id="youtubeUrl"
+            type="url"
+            placeholder="https://www.youtube.com/watch?v=..."
+            autocomplete="off"
+          />
+          <select id="desiredClips" aria-label="Number of clips to suggest">
+            <option value="5">5 Clips</option>
+            <option value="6" selected>6 Clips</option>
+            <option value="8">8 Clips</option>
+            <option value="10">10 Clips</option>
+          </select>
+        </div>
+
+        <!-- Authorized Local Video Upload -->
+        <div class="upload-box">
+          <div class="upload-info">
+            <div class="upload-title">Authorized Source Video (Required for MP4 Export or Local Whisper)</div>
+            <p class="upload-hint">
+              ClipGenius AI never bypasses YouTube download protections. Upload the MP4/MOV/MKV you own or have permission to edit so FFmpeg can render vertical 9:16 MP4 clips locally.
+            </p>
+          </div>
+          <div class="upload-actions">
+            <input id="videoFileInput" type="file" accept=".mp4,.mov,.mkv,.webm,.m4v,video/*" hidden />
+            <button id="uploadBtn" type="button" class="btn btn-secondary">Upload Video File</button>
+            <span id="uploadStatus" class="upload-status">No local file selected</span>
+          </div>
+        </div>
+
+        <!-- Rights Confirmation -->
+        <label class="rights-check">
+          <input id="rightsCheckbox" type="checkbox" />
+          <span>
+            I confirm that I own this video, hold explicit permission to edit it, or am otherwise legally authorized to clip and repurpose it.
+          </span>
+        </label>
+
+        <button id="analyzeBtn" type="button" class="btn btn-primary btn-lg">
+          <span class="btn-label">Analyze Video</span>
+        </button>
+
+        <!-- Error Banner -->
+        <div id="errorBanner" class="error-banner hidden" role="alert"></div>
+
+        <!-- Loading State -->
+        <div id="loadingBox" class="loading-box hidden" aria-live="polite">
+          <div class="spinner"></div>
+          <div>
+            <div id="loadingTitle" class="loading-title">Analyzing video with Gemini AI...</div>
+            <div id="loadingSub" class="loading-sub">Fetching metadata &amp; transcript, then scoring the strongest 15–60s moments.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Video Metadata Preview -->
+      <section id="metaSection" class="panel meta-panel hidden">
+        <div class="meta-grid">
+          <div class="meta-thumb-wrap">
+            <img id="metaThumb" class="meta-thumb hidden" alt="Video thumbnail" />
+            <div id="metaThumbFallback" class="meta-thumb-fallback">LOCAL VIDEO</div>
+          </div>
+          <div class="meta-details">
+            <span id="metaSourceBadge" class="badge badge-purple">Transcript: YouTube Captions</span>
+            <h2 id="metaTitle"></h2>
+            <div class="meta-stats">
+              <span id="metaAuthor"></span>
+              <span id="metaDuration"></span>
+              <span id="metaClipCount"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Suggested Clips Section -->
+      <section id="clipsSection" class="clips-section hidden">
+        <div class="section-header">
+          <div>
+            <h2>AI-Identified Viral Moments</h2>
+            <p class="section-sub">
+              Preview each moment, fine-tune start/end timestamps, mark favorites, and render vertical 9:16 MP4 clips with animated captions.
+            </p>
+          </div>
+          <div class="filter-bar">
+            <button id="filterAllBtn" type="button" class="chip chip-active">All Clips</button>
+            <button id="filterFavBtn" type="button" class="chip">Favorites (<span id="favCount">0</span>)</button>
+          </div>
+        </div>
+
+        <div id="clipsGrid" class="clips-grid"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        ClipGenius AI MVP &middot; Viral potential scores estimate engagement characteristics (hook, clarity, pacing) and do not guarantee views. Only edit videos you are authorized to use.
+      </p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
